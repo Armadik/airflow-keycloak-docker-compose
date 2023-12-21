@@ -1,0 +1,33 @@
+{
+  "enabled": true,
+  "realm": "master",
+  "groups": [
+    {
+      "name": "airflow_admins",
+      "path": "/airflow_admins",
+      "clientRoles": {
+        "airflow": [
+          "airflow_admins"
+        ]
+      }
+    },
+    {
+      "name": "airflow_users",
+      "path": "/airflow_users",
+      "clientRoles": {
+        "airflow": [
+          "airflow_users"
+        ]
+      }
+    },
+    {
+      "name": "airflow_viewers",
+      "path": "/airflow_viewers",
+      "clientRoles": {
+        "airflow": [
+          "airflow_viewers"
+        ]
+      }
+    }
+  ]
+}
