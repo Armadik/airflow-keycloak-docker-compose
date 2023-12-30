@@ -1,8 +1,8 @@
 import os
 import logging
-
 import jwt
 import requests
+
 from base64 import b64decode
 from cryptography.hazmat.primitives import serialization
 from flask_appbuilder import expose

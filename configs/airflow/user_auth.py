@@ -22,6 +22,9 @@
 """
 
 import logging
+import jwt
+import requests
+
 from functools import wraps
 from typing import Any, Callable, Optional, Tuple, TypeVar, Union, cast
 
@@ -29,8 +32,6 @@ from flask import Response, current_app, request
 from flask_appbuilder.const import AUTH_OAUTH, AUTH_LDAP, AUTH_DB
 from airflow.www.fab_security.sqla.models import User
 from flask_login import login_user
-
-import requests
 from base64 import b64decode
 from cryptography.hazmat.primitives import serialization
 
@@ -67,6 +68,7 @@ def auth_current_user() -> Optional[User]:
         if tokeninfo is None or len(tokeninfo) < 2:
             return None
 
+        me = jwt.decode(tokeninfo[1], public_key, algorithms=['RS256'], audience='account')
         groups = me["resource_access"]["airflow"]["roles"]  # unsafe
         if len(groups) < 1:
             groups = ["airflow_test_analytics_admins"]
