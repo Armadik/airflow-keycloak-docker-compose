@@ -1,6 +1,5 @@
 import os
 import logging
-import jwt
 
 import jwt
 import requests
@@ -66,15 +65,8 @@ class CustomSecurityManager(AirflowSecurityManager):
             public_key = serialization.load_der_public_key(key_der)
 
             token = response["access_token"]
-            print(token)
             me = jwt.decode(token, public_key, algorithms="RS256", verify=False, audience='account')
-
-            # sample of resource_access
-            # {
-            #   "resource_access": { "airflow": { "roles": ["airflow_admin"] }}
-            # }
             groups = me["resource_access"]["airflow"]["roles"]  # unsafe
-            # log.info("groups: {0}".format(groups))
             if len(groups) < 1:
                 groups = ["airflow_public"]
             else:

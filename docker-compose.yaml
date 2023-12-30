@@ -1,11 +1,7 @@
 version: '3'
 x-airflow-common:
   &airflow-common
-  # In order to add custom dependencies or upgrade provider packages you can use your extended image.
-  # Comment the image line, place your Dockerfile in the directory where you placed the docker-compose.yaml
-  # and uncomment the "build" line below, Then run `docker-compose build` to build the images.
   image: ${AIRFLOW_IMAGE_NAME:-apache/airflow:2.4.2}
-  # build: .
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
@@ -16,8 +12,6 @@ x-airflow-common:
     AIRFLOW__CORE__FERNET_KEY: ''
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
-    #AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
-    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
     AIRFLOW__LOGGING__LOGGING_LEVEL: 'INFO'
     AIRFLOW__API__AUTH_BACKENDS: 'user_auth'
   user: "${AIRFLOW_UID:-50000}:0"
@@ -145,8 +139,6 @@ services:
           KEYCLOAK_ADMIN: admin
           KEYCLOAK_ADMIN_PASSWORD: Pa55w0rd
           KEYCLOAK_FRONTEND_URL: http://localhost:8080/auth
-          # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
-          #JDBC_PARAMS: "ssl=true"
         healthcheck:
           test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ready" ]
           interval: 15s
